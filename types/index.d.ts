@@ -1,9 +1,15 @@
 /* eslint-disable no-unused-vars */
 
+import {Control, FieldPath} from "react-hook-form";
+import { z } from "zod";
+import {authFormSchema} from "@/lib/utils";
+
 declare type SearchParamProps = {
   params: { [key: string]: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
+
+const formSchema = authFormSchema();
 
 // ========================================
 
@@ -157,6 +163,13 @@ declare interface HeaderBoxProps {
 
 declare interface MobileNavProps {
   user: User;
+}
+
+declare interface CustomInputProps {
+  control: Control<z.infer<typeof formSchema>>;
+  name: FieldPath<z.infer<typeof formSchema>>;
+  label: string;
+  placeholder: string;
 }
 
 declare interface PageHeaderProps {
