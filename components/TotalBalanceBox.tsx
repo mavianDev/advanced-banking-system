@@ -1,6 +1,7 @@
 import AnimatedCounter from "@/components/AnimatedCounter";
 import React from "react";
 import DoughnutChart from "@/components/DoughnutChart";
+import {TotlaBalanceBoxProps} from "@/types";
 
 const TotalBalanceBox = ({accounts = [], totalBanks, totalCurrentBalance}: TotlaBalanceBoxProps) => {
     return (

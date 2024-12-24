@@ -3,7 +3,7 @@
 import React, {useState} from 'react'
 import Link from "next/link";
 import Image from "next/image";
-import {date, z} from "zod"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form"
 import { Form } from "@/components/ui/form"
@@ -12,6 +12,7 @@ import CustomInput from "@/components/CustomInput";
 import {authFormSchema} from "@/lib/utils";
 import {Loader2} from "lucide-react";
 import {useRouter} from "next/navigation";
+import {getLoggedInUser, signIn, signUp} from "@/lib/actions/user.actions";
 
 const AuthForm = ({type}: { type: string }) => {
     const router = useRouter();
@@ -27,26 +28,37 @@ const AuthForm = ({type}: { type: string }) => {
         }
     })
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (data: z.infer<typeof formSchema>) => {
         setIsLoading(true);
         try {
             // Sign up with Appwrite & create Plaid token
 
-            if (type === "sign-up") {
+            if(type === 'sign-up') {
                 const userData = {
-                    // const newUser = await signUp(data);
-                    //
-                    // setUser(newUser);
+                    firstName: data.firstName!,
+                    lastName: data.lastName!,
+                    address1: data.address1!,
+                    city: data.city!,
+                    state: data.state!,
+                    postalCode: data.postalCode!,
+                    dateOfBirth: data.dateOfBirth!,
+                    ssn: data.ssn!,
+                    email: data.email,
+                    password: data.password
                 }
+
+                const newUser = await signUp(userData);
+
+                setUser(newUser);
             }
 
             if (type === "sign-in") {
-                // const response = await signIn({
-                //     email: data.email,
-                //     password: data.password,
-                // })
-                //
-                // if (response) router.push("/");
+                const response = await signIn({
+                     email: data.email,
+                     password: data.password,
+                })
+
+                if (response) router.push("/");
             }
         } catch (error) {
             console.log(error);
